@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="software1" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="crocker.software1.HelloApplication" />
+    <module name="software1" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
