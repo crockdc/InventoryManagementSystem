@@ -20,15 +20,15 @@
       </Text>
       <HBox layoutX="207.0" layoutY="9.0" prefHeight="55.0" prefWidth="373.0" spacing="20.0">
          <children>
-            <RadioButton mnemonicParsing="false" prefHeight="53.0" prefWidth="199.0" text="In-House">
+            <RadioButton fx:id="modifyPartInHouseToggle" mnemonicParsing="false" onAction="#onActionModifyPartInHouseToggle" prefHeight="53.0" prefWidth="199.0" text="In-House">
                <font>
                   <Font size="20.0" />
                </font>
                <toggleGroup>
-                  <ToggleGroup fx:id="addPartToggle" />
+                  <ToggleGroup fx:id="modifyPartToggle" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="199.0" text="Outsourced" toggleGroup="$addPartToggle">
+            <RadioButton fx:id="modifyPartOutsourcedToggle" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionModifyPartOutsourceToggle" prefHeight="53.0" prefWidth="199.0" text="Outsourced" toggleGroup="$modifyPartToggle">
                <font>
                   <Font size="20.0" />
                </font>
@@ -62,7 +62,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="10.0" layoutY="78.0" text="Company Name">
+            <Label fx:id="modifyPartCompanyLabel" layoutX="10.0" layoutY="78.0" text="Company Name">
                <font>
                   <Font size="18.0" />
                </font>
@@ -71,37 +71,37 @@
       </VBox>
       <HBox layoutX="357.0" layoutY="413.0" prefHeight="53.0" prefWidth="200.0" spacing="20.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="41.0" prefWidth="76.0" text="Save" />
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="76.0" text="Cancel" />
+            <Button fx:id="modifyPartSaveButton" mnemonicParsing="false" onAction="#onActionModifyPartSaveButton" prefHeight="41.0" prefWidth="76.0" text="Save" />
+            <Button fx:id="modifyPartCancelButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActionModifyPartCancelButton" prefHeight="41.0" prefWidth="76.0" text="Cancel" />
          </children>
       </HBox>
       <VBox layoutX="237.0" layoutY="69.0" prefHeight="218.0" prefWidth="183.0" spacing="19.0">
          <children>
-            <TextField disable="true" editable="false" prefHeight="36.0" prefWidth="183.0" promptText="Auto Gen - Disabled">
+            <TextField fx:id="modifyPartIDtext" disable="true" editable="false" opacity="0.5" prefHeight="36.0" prefWidth="183.0">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
             </TextField>
-            <TextField layoutX="10.0" layoutY="10.0" prefHeight="36.0" prefWidth="183.0" promptText="Part Name">
+            <TextField fx:id="modifyPartNameText" layoutX="10.0" layoutY="10.0" prefHeight="36.0" prefWidth="183.0" promptText="Part Name">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></TextField>
-            <TextField layoutX="10.0" layoutY="46.0" prefHeight="36.0" prefWidth="183.0" promptText="Inv">
+            <TextField fx:id="modifyPartInvText" layoutX="10.0" layoutY="46.0" prefHeight="36.0" prefWidth="183.0" promptText="Inv">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></TextField>
-            <TextField layoutX="10.0" layoutY="82.0" prefHeight="36.0" prefWidth="183.0" promptText="Price/Cost">
+            <TextField fx:id="modifyPartCostText" layoutX="10.0" layoutY="82.0" prefHeight="36.0" prefWidth="183.0" promptText="Price/Cost">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></TextField>
          </children>
       </VBox>
-      <TextField layoutX="237.0" layoutY="345.0" prefHeight="36.0" prefWidth="183.0" promptText="Company Name" />
-      <TextField layoutX="237.0" layoutY="287.0" prefHeight="36.0" prefWidth="108.0" promptText="Max">
+      <TextField fx:id="modifyPartCompanyText" layoutX="237.0" layoutY="345.0" prefHeight="36.0" prefWidth="183.0" promptText="Company Name" />
+      <TextField fx:id="modifyPartMaxText" layoutX="237.0" layoutY="287.0" prefHeight="36.0" prefWidth="108.0" promptText="Max">
          <font>
             <Font name="System Italic" size="12.0" />
          </font></TextField>
-      <TextField layoutX="412.0" layoutY="288.0" prefHeight="36.0" prefWidth="108.0" promptText="Min">
+      <TextField fx:id="modifyPartMinText" layoutX="412.0" layoutY="288.0" prefHeight="36.0" prefWidth="108.0" promptText="Min">
          <font>
             <Font name="System Italic" size="12.0" />
          </font></TextField>

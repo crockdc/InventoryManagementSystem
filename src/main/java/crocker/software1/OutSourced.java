@@ -1,4 +1,4 @@
-package crocker.model;
+package crocker.software1;
 
 public class OutSourced extends Part {
 

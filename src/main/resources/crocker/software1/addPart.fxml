@@ -20,7 +20,7 @@
       </Text>
       <HBox layoutX="207.0" layoutY="9.0" prefHeight="55.0" prefWidth="373.0" spacing="20.0">
          <children>
-            <RadioButton fx:id="addPartInHouse" mnemonicParsing="false" onAction="#onActionAddPartInHouse" prefHeight="53.0" prefWidth="199.0" text="In-House">
+            <RadioButton fx:id="addPartInHouse" mnemonicParsing="false" onAction="#onActionAddPartInHouse" prefHeight="53.0" prefWidth="199.0" selected="true" text="In-House">
                <font>
                   <Font size="20.0" />
                </font>
@@ -62,7 +62,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="addPartCompanyLabel" layoutX="10.0" layoutY="78.0" text="Company Name">
+            <Label fx:id="addPartCompanyLabel" layoutX="10.0" layoutY="78.0" text="Machine ID">
                <font>
                   <Font size="18.0" />
                </font>
@@ -96,7 +96,7 @@
                </font></TextField>
          </children>
       </VBox>
-      <TextField fx:id="addPartCompanyText" layoutX="237.0" layoutY="345.0" onAction="#onActionAddPartCompanyText" prefHeight="36.0" prefWidth="183.0" promptText="Company Name" />
+      <TextField fx:id="addPartCompanyText" layoutX="237.0" layoutY="345.0" onAction="#onActionAddPartCompanyText" prefHeight="36.0" prefWidth="183.0" promptText="Machine ID" />
       <TextField fx:id="addPartMaxText" layoutX="237.0" layoutY="287.0" onAction="#onActionAddPartMaxText" prefHeight="36.0" prefWidth="108.0" promptText="Max">
          <font>
             <Font name="System Italic" size="12.0" />

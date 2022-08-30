@@ -3,14 +3,18 @@ package crocker.software1;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class addPartController {
+public class addPartController implements Initializable {
     Stage stage;
     Parent scene;
     @FXML
@@ -68,7 +72,8 @@ public class addPartController {
 
     @FXML
     void onActionAddPartInHouse(ActionEvent event) {
-
+        addPartCompanyLabel.setText("Machine ID");
+        addPartCompanyText.setPromptText("Machine ID");
     }
 
     @FXML
@@ -93,7 +98,8 @@ public class addPartController {
 
     @FXML
     void onActionAddPartOutsourced(ActionEvent event) {
-
+        addPartCompanyLabel.setText("Company Name");
+        addPartCompanyText.setPromptText("Company Name");
     }
 
     @FXML
@@ -102,7 +108,41 @@ public class addPartController {
     }
 
     @FXML
-    void onActionAddPartSaveButton(ActionEvent event) {
+    void onActionAddPartSaveButton(ActionEvent event) throws IOException {
+        if (!addPartNameText.getText().isEmpty() &&
+        !addPartInvText.getText().isEmpty() &&
+        !addPartPriceText.getText().isEmpty() &&
+        !addPartMinText.getText().isEmpty() &&
+        !addPartMaxText.getText().isEmpty() &&
+        !addPartCompanyText.getText().isEmpty()) {
+            if (addPartInHouse.isSelected()) {
+                InHouse inhouse = new InHouse(Inventory.getAllParts().size() + 1, addPartNameText.getText(),
+                        Double.parseDouble(addPartPriceText.getText()), Integer.parseInt(addPartInvText.getText()),
+                        Integer.parseInt(addPartMinText.getText()), Integer.parseInt(addPartMaxText.getText()),
+                        Integer.parseInt(addPartCompanyText.getText()));
+                Inventory.addPart(inhouse);
+            } else {
+                OutSourced outsourced = new OutSourced(Inventory.getAllParts().size(), addPartNameText.getText(),
+                        Double.parseDouble(addPartPriceText.getText()), Integer.parseInt(addPartInvText.getText()),
+                        Integer.parseInt(addPartMinText.getText()), Integer.parseInt(addPartMaxText.getText()),
+                        addPartCompanyText.getText());
+                Inventory.addPart(outsourced);
+            }
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+            stage.setTitle("Inventory Management System");
+            stage.setScene(new Scene(scene));
+            stage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please complete all fields.");
+            alert.setTitle("Incomplete Fields Error");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
+    }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // use something similar to this in "modify part" to populate the text box -- addPartIDtext.setText(String.valueOf(Inventory.getAllParts().size()));
     }
 }

@@ -1,32 +1,19 @@
-package crocker.model;
+package crocker.software1;
 
-import javafx.collections.ObservableList;
-
-public class Product {
-    private ObservableList<Part> associatedParts;
+public abstract class Part {
     private int id;
     private String name;
     private double price;
     private int stock;
     private int min;
     private int max;
-    public Product(ObservableList<Part> associatedParts, int id, String name, double price, int stock, int min, int max) {
-        this.associatedParts = associatedParts;
+    public Part(int id, String name, double price, int stock, int min, int max) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.stock = stock;
         this.min = min;
         this.max = max;
-    }
-
-    //note: UMD shows getAllAssociatedParts instead
-    public ObservableList<Part> getAssociatedParts() {
-        return associatedParts;
-    }
-
-    public void setAssociatedParts(ObservableList<Part> associatedParts) {
-        this.associatedParts = associatedParts;
     }
 
     public int getId() {
@@ -76,5 +63,4 @@ public class Product {
     public void setMax(int max) {
         this.max = max;
     }
-
 }

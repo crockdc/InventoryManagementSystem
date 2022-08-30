@@ -1,4 +1,4 @@
-package crocker.model;
+package crocker.software1;
 
 public class InHouse extends Part {
     private int machineId;
@@ -15,4 +15,6 @@ public class InHouse extends Part {
     public void setMachineId(int machineId) {
         this.machineId = machineId;
     }
+
 }
+

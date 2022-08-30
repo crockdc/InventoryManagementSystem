@@ -33,7 +33,7 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <TableView layoutX="55.0" layoutY="234.0" prefHeight="253.0" prefWidth="535.0">
+      <TableView fx:id="mainPartTable" layoutX="55.0" layoutY="234.0" prefHeight="253.0" prefWidth="535.0">
         <columns>
           <TableColumn fx:id="mainPartIDColumn" prefWidth="120.0" text="Part ID" />
           <TableColumn fx:id="mainPartNameColumn" prefWidth="220.0" text="Part Name" />
@@ -41,7 +41,7 @@
             <TableColumn fx:id="mainPartPriceColumn" prefWidth="100.0" text="Price Per Unit" />
         </columns>
       </TableView>
-      <TableView layoutX="682.0" layoutY="234.0" prefHeight="253.0" prefWidth="535.0">
+      <TableView fx:id="mainProductTable" layoutX="682.0" layoutY="234.0" prefHeight="253.0" prefWidth="535.0">
          <columns>
             <TableColumn fx:id="mainProductIDColumn" prefWidth="120.0" text="Product ID" />
             <TableColumn fx:id="mainProductNameColumn" prefWidth="220.0" text="Product Name" />
@@ -63,17 +63,7 @@
             <Button fx:id="mainProductsDeleteButton" mnemonicParsing="false" onAction="#onActionMainDeleteProduct" prefHeight="36.0" prefWidth="95.0" text="Delete" />
          </children>
       </HBox>
-      <HBox layoutX="293.0" layoutY="190.0" prefHeight="36.0" prefWidth="297.0">
-         <children>
-            <Button fx:id="mainPartSearchButton" mnemonicParsing="false" onAction="#onActionMainSearchParts" prefHeight="36.0" prefWidth="83.0" text="Search" />
-            <TextField fx:id="mainPartSearchText" prefHeight="36.0" prefWidth="218.0" promptText="Search by Part ID or Name" />
-         </children>
-      </HBox>
-      <HBox layoutX="920.0" layoutY="190.0" prefHeight="36.0" prefWidth="297.0">
-         <children>
-            <Button fx:id="mainProductSearchButton" mnemonicParsing="false" onAction="#onActionMainSearchProducts" prefHeight="36.0" prefWidth="83.0" text="Search" />
-            <TextField fx:id="mainProductSearchText" prefHeight="45.0" prefWidth="215.0" promptText="Search by Product ID or Name" />
-         </children>
-      </HBox>
+      <TextField fx:id="mainPartSearchText" layoutX="323.0" layoutY="185.0" onAction="#onActionMainPartSearchText" prefHeight="45.0" prefWidth="215.0" promptText="Search by Part ID or Name" />
+      <TextField fx:id="mainProductSearchText" layoutX="955.0" layoutY="185.0" onAction="#onActionMainProductSearchText" prefHeight="45.0" prefWidth="215.0" promptText="Search by Product ID or Name" />
    </children>
 </AnchorPane>
