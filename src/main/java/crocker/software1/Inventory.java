@@ -8,13 +8,15 @@ public class Inventory {
     private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
     public static void addPart(Part part) {
-        allParts.add(part);
+        if (part != null) {
+            allParts.add(part);
+        }
     }
     public static void addProduct(Product product) {
         allProducts.add(product);
     }
     public static Part lookUpPart(int partId) {
-        for (Part part: allParts) {
+        for (Part part : allParts) {
             if (part.getId() == partId) {
                 return part;
             }
@@ -32,7 +34,7 @@ public class Inventory {
     public static ObservableList<Part> lookupPart(String partName) {
         ObservableList<Part> searchList = FXCollections.observableArrayList();
         for (Part part: allParts) {
-            if (part.getName().contains(partName)) {
+            if (part.getName().toLowerCase().contains(partName.toLowerCase())) {
                 searchList.add(part);
             }
         }
@@ -41,7 +43,7 @@ public class Inventory {
     public static ObservableList<Product> lookupProduct(String productName) {
         ObservableList<Product> searchList = FXCollections.observableArrayList();
         for (Product product: allProducts) {
-            if (product.getName().contains(productName)) {
+            if (product.getName().toLowerCase().contains(productName.toLowerCase())) {
                 searchList.add(product);
             }
         }

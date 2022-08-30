@@ -109,6 +109,19 @@ public class addPartController implements Initializable {
 
     @FXML
     void onActionAddPartSaveButton(ActionEvent event) throws IOException {
+        int newId = 1;
+        for (Part part: Inventory.getAllParts()) {
+            System.out.println(part.getName());
+            if (part.getId() == newId) {
+                newId = part.getId() + 1;
+                for(Part part2: Inventory.getAllParts()) {
+                    if (part2.getId() == newId) {
+                        newId = part2.getId() + 1;
+                    }
+                }
+            }
+        }
+
         if (!addPartNameText.getText().isEmpty() &&
         !addPartInvText.getText().isEmpty() &&
         !addPartPriceText.getText().isEmpty() &&
@@ -116,13 +129,13 @@ public class addPartController implements Initializable {
         !addPartMaxText.getText().isEmpty() &&
         !addPartCompanyText.getText().isEmpty()) {
             if (addPartInHouse.isSelected()) {
-                InHouse inhouse = new InHouse(Inventory.getAllParts().size() + 1, addPartNameText.getText(),
+                InHouse inhouse = new InHouse(newId, addPartNameText.getText(),
                         Double.parseDouble(addPartPriceText.getText()), Integer.parseInt(addPartInvText.getText()),
                         Integer.parseInt(addPartMinText.getText()), Integer.parseInt(addPartMaxText.getText()),
                         Integer.parseInt(addPartCompanyText.getText()));
                 Inventory.addPart(inhouse);
             } else {
-                OutSourced outsourced = new OutSourced(Inventory.getAllParts().size(), addPartNameText.getText(),
+                OutSourced outsourced = new OutSourced(newId, addPartNameText.getText(),
                         Double.parseDouble(addPartPriceText.getText()), Integer.parseInt(addPartInvText.getText()),
                         Integer.parseInt(addPartMinText.getText()), Integer.parseInt(addPartMaxText.getText()),
                         addPartCompanyText.getText());
@@ -143,6 +156,5 @@ public class addPartController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        // use something similar to this in "modify part" to populate the text box -- addPartIDtext.setText(String.valueOf(Inventory.getAllParts().size()));
     }
 }

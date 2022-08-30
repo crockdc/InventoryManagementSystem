@@ -1,5 +1,7 @@
 package crocker.software1;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,7 +81,7 @@ public class mainMenuController implements Initializable {
 
     @FXML
     void onActionMainAddPart(ActionEvent event) throws IOException {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("addPart.fxml"));
         stage.setTitle("Add Part");
         stage.setScene(new Scene(scene));
@@ -88,7 +90,7 @@ public class mainMenuController implements Initializable {
 
     @FXML
     void onActionMainAddProduct(ActionEvent event) throws IOException {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("addProduct.fxml"));
         stage.setTitle("Add Product");
         stage.setScene(new Scene(scene));
@@ -101,17 +103,20 @@ public class mainMenuController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this part?");
             alert.setTitle("Confirm Part Deletion");
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK);
+            if (result.get() == ButtonType.OK) {
+                Inventory.deletePart(mainPartTable.getSelectionModel().getSelectedItem());
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a part to delete.");
             alert.setTitle("No Part Selected Error");
             Optional<ButtonType> result = alert.showAndWait();
         }
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
         stage.setTitle("Inventory Management System");
         stage.setScene(new Scene(scene));
-        stage.show();;
+        stage.show();
+        ;
     }
 
     @FXML
@@ -120,13 +125,13 @@ public class mainMenuController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this product?");
             alert.setTitle("Confirm Product Deletion");
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK);
+            if (result.get() == ButtonType.OK) ;
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a product to delete.");
             alert.setTitle("No Product Selected Error");
             Optional<ButtonType> result = alert.showAndWait();
         }
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
         stage.setTitle("Inventory Management System");
         stage.setScene(new Scene(scene));
@@ -141,11 +146,12 @@ public class mainMenuController implements Initializable {
         if (result.get() == ButtonType.OK) {
             System.exit(0);
         }
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
         stage.setTitle("Inventory Management System");
         stage.setScene(new Scene(scene));
-        stage.show();;
+        stage.show();
+        ;
     }
 
     @FXML
@@ -158,7 +164,7 @@ public class mainMenuController implements Initializable {
             modifyPartController modifyPartController1 = loader.getController();
             modifyPartController1.displayMainPart(selectedPart);
 
-            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             //scene = FXMLLoader.load(getClass().getResource("modifyPart.fxml"));
             stage.setTitle("Modify Part");
             stage.setScene(new Scene(scene));
@@ -187,21 +193,44 @@ public class mainMenuController implements Initializable {
 
     @FXML
     void onActionMainPartSearchText(ActionEvent event) {
-
+        ObservableList<Part> searchList = FXCollections.observableArrayList();
+        if (!mainPartSearchText.getText().isEmpty()) {
+            for (Part part : Inventory.getAllParts()) {
+                if (mainPartSearchText.getText().equals(String.valueOf(part.getId()))) {
+                    searchList.add(part);
+                    if (!searchList.isEmpty()) {
+                        mainPartTable.setItems(searchList);
+                        return;
+                    }
+                }
+            }
+            mainPartTable.setItems(Inventory.lookupPart(mainPartSearchText.getText()));
+            return;
+        }
+        mainPartTable.setItems(Inventory.getAllParts());
     }
+
 
     @FXML
     void onActionMainProductSearchText(ActionEvent event) {
 
     }
+
     private static boolean firstTime = true;
+
     private void addTestData() {
         if (!firstTime) {
             return;
         }
         firstTime = false;
-        InHouse newPart1 = new InHouse(1, "Screwdriver", 1.99, 3, 1, 5, 04332);
+        InHouse newPart1 = new InHouse(2, "CPU", 120.99, 3, 1, 5, 604332);
         Inventory.addPart(newPart1);
+        OutSourced newPart2 = new OutSourced(3, "Power Supply", 75.59, 7, 1, 20, "Acme");
+        Inventory.addPart(newPart2);
+        InHouse newPart3 = new InHouse(4, "Wireless Adapter", 25.99, 3, 1, 5, 143532);
+        Inventory.addPart(newPart3);
+        InHouse newPart4 = new InHouse(5, "DDR4 RAM", 50.99, 3, 1, 5, 704132);
+        Inventory.addPart(newPart4);
     }
 
 

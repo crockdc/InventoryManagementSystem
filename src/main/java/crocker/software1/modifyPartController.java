@@ -58,12 +58,16 @@ public class modifyPartController implements Initializable {
 
     @FXML
     void onActionModifyPartInHouseToggle(ActionEvent event) {
-
+        modifyPartInHouseToggle.setSelected(true);
+        modifyPartCompanyLabel.setText("Machine ID");
+        modifyPartCompanyText.setPromptText("Machine ID");
     }
 
     @FXML
     void onActionModifyPartOutsourceToggle(ActionEvent event) {
-
+        modifyPartOutsourcedToggle.setSelected(true);
+        modifyPartCompanyLabel.setText("Company Name");
+        modifyPartCompanyText.setPromptText("Company Name");
     }
 
 
@@ -85,16 +89,20 @@ public class modifyPartController implements Initializable {
                 !modifyPartMaxText.getText().isEmpty() &&
                 !modifyPartCompanyText.getText().isEmpty()) {
             if (modifyPartInHouseToggle.isSelected()) {
-                InHouse inhouse = new InHouse(Inventory.getAllParts().size() + 1, modifyPartNameText.getText(),
+                InHouse inhouse = new InHouse(Integer.parseInt(modifyPartIDtext.getText()), modifyPartNameText.getText(),
                         Double.parseDouble(modifyPartCostText.getText()), Integer.parseInt(modifyPartInvText.getText()),
                         Integer.parseInt(modifyPartMinText.getText()), Integer.parseInt(modifyPartMaxText.getText()),
                         Integer.parseInt(modifyPartCompanyText.getText()));
+                Part deletedPart = Inventory.lookUpPart(Integer.parseInt(modifyPartIDtext.getText()));
+                Inventory.deletePart(deletedPart);
                 Inventory.addPart(inhouse);
             } else {
-                OutSourced outsourced = new OutSourced(Inventory.getAllParts().size(), modifyPartNameText.getText(),
+                OutSourced outsourced = new OutSourced(Integer.parseInt(modifyPartIDtext.getText()), modifyPartNameText.getText(),
                         Double.parseDouble(modifyPartCostText.getText()), Integer.parseInt(modifyPartInvText.getText()),
                         Integer.parseInt(modifyPartMinText.getText()), Integer.parseInt(modifyPartMaxText.getText()),
                         modifyPartCompanyText.getText());
+                Part deletedPart = Inventory.lookUpPart(Integer.parseInt(modifyPartIDtext.getText()));
+                Inventory.deletePart(deletedPart);
                 Inventory.addPart(outsourced);
             }
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -110,8 +118,19 @@ public class modifyPartController implements Initializable {
     }
     public void displayMainPart(Part part) {
         if (part.getClass() == InHouse.class) {
-            modifyPartInHouseToggle.setSelected(true);
+            onActionModifyPartInHouseToggle(new ActionEvent());
+            modifyPartCompanyText.setText(String.valueOf(((InHouse) part).getMachineId()));
+        } else {
+            onActionModifyPartOutsourceToggle(new ActionEvent());
+            modifyPartCompanyText.setText(((OutSourced) part).getCompanyName());
         }
+        modifyPartIDtext.setText(String.valueOf(part.getId()));
+        modifyPartNameText.setText(part.getName());
+        modifyPartInvText.setText(String.valueOf(part.getStock()));
+        modifyPartCostText.setText(String.valueOf(part.getPrice()));
+        modifyPartMaxText.setText(String.valueOf(part.getMax()));
+        modifyPartMinText.setText(String.valueOf(part.getMin()));
+
     }
 
 
