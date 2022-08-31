@@ -88,7 +88,11 @@ public class addProductController implements Initializable {
 
     @FXML
     void onActionAddProductAddPartButton(ActionEvent event) {
-
+        if (addProductAddPartTableView.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a part to associate with the product.");
+            alert.setTitle("No part selected");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
     }
 
 
@@ -99,16 +103,25 @@ public class addProductController implements Initializable {
 
     @FXML
     void onActionAddProductCancelButton(ActionEvent event) throws IOException {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-        stage.setTitle("Inventory Management System");
-        stage.setScene(new Scene(scene));
-        stage.show();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel adding a new product?");
+        alert.setTitle("Confirm Cancel");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+            stage.setTitle("Inventory Management System");
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 
     @FXML
     void onActionAddProductDeletePartButton(ActionEvent event) {
-
+        if (addProductDeletePartTableView.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an associated part to remove.");
+            alert.setTitle("No part selected");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
     }
 
     @FXML

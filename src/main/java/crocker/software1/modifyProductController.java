@@ -8,15 +8,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class modifyProductController implements Initializable {
@@ -91,7 +89,11 @@ public class modifyProductController implements Initializable {
 
     @FXML
     void onActionModifyProductAddPartButton(ActionEvent event) {
-
+        if (modifyProductAddPartTableView.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a part to associate with the product.");
+            alert.setTitle("No part selected");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
     }
 
     @FXML
@@ -101,16 +103,25 @@ public class modifyProductController implements Initializable {
 
     @FXML
     void onActionModifyProductCancelButton(ActionEvent event) throws IOException {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-        stage.setTitle("Inventory Management System");
-        stage.setScene(new Scene(scene));
-        stage.show();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel product modification?");
+        alert.setTitle("Confirm Cancel");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+            stage.setTitle("Inventory Management System");
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 
     @FXML
     void onActionModifyProductDeletePartButton(ActionEvent event) {
-
+        if (modifyProductDeletePartTableView.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an associated part to remove.");
+            alert.setTitle("No part selected");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
     }
 
     @FXML

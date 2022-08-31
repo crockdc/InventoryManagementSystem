@@ -186,8 +186,13 @@ public class mainMenuController implements Initializable {
     @FXML
     void onActionMainModifyProduct(ActionEvent event) throws IOException {
         if (!mainProductTable.getSelectionModel().getSelectedCells().isEmpty()) {
+            Product selectedProduct = mainProductTable.getSelectionModel().getSelectedItem();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("modifyProduct.fxml"));
+            scene = loader.load();
+            modifyProductController modifyProductController1 = loader.getController();
+            modifyProductController1.displayMainProduct(selectedProduct);
+
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("modifyProduct.fxml"));
             stage.setTitle("Modify Product");
             stage.setScene(new Scene(scene));
             stage.show();

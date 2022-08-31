@@ -58,11 +58,16 @@ public class addPartController implements Initializable {
 
     @FXML
     void onActionAddPartCancelButton(ActionEvent event) throws IOException {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-        stage.setTitle("Inventory Management System");
-        stage.setScene(new Scene(scene));
-        stage.show();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel adding a new part?");
+        alert.setTitle("Confirm Cancel");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+            stage.setTitle("Inventory Management System");
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 
     @FXML
