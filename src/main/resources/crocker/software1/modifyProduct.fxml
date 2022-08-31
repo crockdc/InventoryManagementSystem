@@ -72,7 +72,7 @@
          </font>
       </Label>
       <TextField fx:id="modifyProductSearchText" layoutX="749.0" layoutY="63.0" onAction="#onActionModifyProductSearchText" prefHeight="46.0" prefWidth="220.0" promptText="Search by Part ID or Name" />
-      <TableView fx:id="addProductAddPartTableView" layoutX="640.0" layoutY="124.0" prefHeight="200.0" prefWidth="517.0">
+      <TableView fx:id="modifyProductAddPartTableView" layoutX="640.0" layoutY="124.0" prefHeight="200.0" prefWidth="517.0">
         <columns>
           <TableColumn fx:id="modifyProductAddPartTablePartIdColumn" prefWidth="100.0" text="Part ID" />
           <TableColumn fx:id="modifyProductAddPartTablePartNameColumn" prefWidth="220.0" text="Part Name" />
@@ -80,7 +80,7 @@
             <TableColumn fx:id="modifyProductAddPartTableCostColumn" prefWidth="100.0" text="Price Per Unit" />
         </columns>
       </TableView>
-      <TableView fx:id="addProductDeletePartTableView" layoutX="640.0" layoutY="396.0" prefHeight="200.0" prefWidth="517.0">
+      <TableView fx:id="modifyProductDeletePartTableView" layoutX="640.0" layoutY="396.0" prefHeight="200.0" prefWidth="517.0">
          <columns>
             <TableColumn fx:id="modifyProductDeletePartTablePartIdColumn" prefWidth="100.0" text="Part ID" />
             <TableColumn fx:id="modifyProductDeletePartTablePartNameColumn" prefWidth="220.0" text="Part Name" />

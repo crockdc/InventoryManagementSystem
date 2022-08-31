@@ -131,7 +131,9 @@ public class mainMenuController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this product?");
             alert.setTitle("Confirm Product Deletion");
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) ;
+            if (result.get() == ButtonType.OK) {
+                Inventory.deleteProduct(mainProductTable.getSelectionModel().getSelectedItem());
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a product to delete.");
             alert.setTitle("No Product Selected Error");
@@ -218,21 +220,21 @@ public class mainMenuController implements Initializable {
 
     @FXML
     void onActionMainProductSearchText(ActionEvent event) {
-      /*  ObservableList<Part> searchList = FXCollections.observableArrayList();
-        if (!mainPartSearchText.getText().isEmpty()) {
-            for (Part part : Inventory.getAllParts()) {
-                if (mainPartSearchText.getText().equals(String.valueOf(part.getId()))) {
-                    searchList.add(part);
+        ObservableList<Product> searchList = FXCollections.observableArrayList();
+        if (!mainProductSearchText.getText().isEmpty()) {
+            for (Product product : Inventory.getAllProducts()) {
+                if (mainProductSearchText.getText().equals(String.valueOf(product.getId()))) {
+                    searchList.add(product);
                     if (!searchList.isEmpty()) {
-                        mainPartTable.setItems(searchList);
+                        mainProductTable.setItems(searchList);
                         return;
                     }
                 }
             }
-            mainPartTable.setItems(Inventory.lookupPart(mainPartSearchText.getText()));
+            mainProductTable.setItems(Inventory.lookupProduct(mainProductSearchText.getText()));
             return;
         }
-        mainPartTable.setItems(Inventory.getAllParts()); */
+        mainProductTable.setItems(Inventory.getAllProducts());
     }
     @FXML
     void onActionMainSearchPartsButton(ActionEvent event) {
@@ -304,8 +306,5 @@ public class mainMenuController implements Initializable {
 
 
         System.out.println("Initialized!");
-
-        Part selectedPart = mainPartTable.getSelectionModel().getSelectedItem();
-
     }
 }
