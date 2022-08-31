@@ -80,6 +80,12 @@ public class mainMenuController implements Initializable {
     private Button mainProductsModifyButton;
 
     @FXML
+    private Button mainSearchPartsButton;
+
+    @FXML
+    private Button mainSearchProductsButton;
+
+    @FXML
     void onActionMainAddPart(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("addPart.fxml"));
@@ -165,7 +171,6 @@ public class mainMenuController implements Initializable {
             modifyPartController1.displayMainPart(selectedPart);
 
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            //scene = FXMLLoader.load(getClass().getResource("modifyPart.fxml"));
             stage.setTitle("Modify Part");
             stage.setScene(new Scene(scene));
             stage.show();
@@ -213,8 +218,32 @@ public class mainMenuController implements Initializable {
 
     @FXML
     void onActionMainProductSearchText(ActionEvent event) {
-
+      /*  ObservableList<Part> searchList = FXCollections.observableArrayList();
+        if (!mainPartSearchText.getText().isEmpty()) {
+            for (Part part : Inventory.getAllParts()) {
+                if (mainPartSearchText.getText().equals(String.valueOf(part.getId()))) {
+                    searchList.add(part);
+                    if (!searchList.isEmpty()) {
+                        mainPartTable.setItems(searchList);
+                        return;
+                    }
+                }
+            }
+            mainPartTable.setItems(Inventory.lookupPart(mainPartSearchText.getText()));
+            return;
+        }
+        mainPartTable.setItems(Inventory.getAllParts()); */
     }
+    @FXML
+    void onActionMainSearchPartsButton(ActionEvent event) {
+        onActionMainPartSearchText(event);
+    }
+
+    @FXML
+    void onActionMainSearchProductsButton(ActionEvent event) {
+        onActionMainProductSearchText(event);
+    }
+
 
     private static boolean firstTime = true;
 
@@ -231,6 +260,26 @@ public class mainMenuController implements Initializable {
         Inventory.addPart(newPart3);
         InHouse newPart4 = new InHouse(5, "DDR4 RAM", 50.99, 3, 1, 5, 704132);
         Inventory.addPart(newPart4);
+
+        ObservableList<Part> associatedParts1 = FXCollections.observableArrayList();
+        associatedParts1.add(newPart1);
+        associatedParts1.add(newPart2);
+        Product newProduct1 = new Product(associatedParts1, 2, "CPU Bundle", 140.99, 3, 1, 5);
+        Inventory.addProduct(newProduct1);
+
+        ObservableList<Part> associatedParts2 = FXCollections.observableArrayList();
+        associatedParts2.add(newPart2);
+        associatedParts2.add(newPart3);
+        Product newProduct2 = new Product(associatedParts2, 3, "Network Package", 85.19, 2, 1, 5);
+        Inventory.addProduct(newProduct2);
+
+        ObservableList<Part> associatedParts3 = FXCollections.observableArrayList();
+        associatedParts3.add(newPart1);
+        associatedParts3.add(newPart2);
+        associatedParts3.add(newPart3);
+        associatedParts3.add(newPart4);
+        Product newProduct3 = new Product(associatedParts3, 4, "Desktop New Build", 199.99, 7, 2, 10);
+        Inventory.addProduct(newProduct3);
     }
 
 
@@ -238,6 +287,13 @@ public class mainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         addTestData();
+
+        mainProductTable.setItems(Inventory.getAllProducts());
+
+        mainProductIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        mainProductNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        mainProductInventoryColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        mainProductPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         mainPartTable.setItems(Inventory.getAllParts());
 

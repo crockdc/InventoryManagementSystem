@@ -65,5 +65,7 @@
       </HBox>
       <TextField fx:id="mainPartSearchText" layoutX="323.0" layoutY="185.0" onAction="#onActionMainPartSearchText" prefHeight="45.0" prefWidth="215.0" promptText="Search by Part ID or Name" />
       <TextField fx:id="mainProductSearchText" layoutX="955.0" layoutY="185.0" onAction="#onActionMainProductSearchText" prefHeight="45.0" prefWidth="215.0" promptText="Search by Product ID or Name" />
+      <Button fx:id="mainSearchPartsButton" layoutX="220.0" layoutY="185.0" mnemonicParsing="false" onAction="#onActionMainSearchPartsButton" prefHeight="45.0" prefWidth="103.0" text="Search" />
+      <Button fx:id="mainSearchProductsButton" layoutX="852.0" layoutY="185.0" mnemonicParsing="false" onAction="#onActionMainSearchProductsButton" prefHeight="45.0" prefWidth="103.0" text="Search" />
    </children>
 </AnchorPane>

@@ -110,15 +110,16 @@ public class addPartController implements Initializable {
     @FXML
     void onActionAddPartSaveButton(ActionEvent event) throws IOException {
         int newId = 1;
-        for (Part part: Inventory.getAllParts()) {
-            System.out.println(part.getName());
-            if (part.getId() == newId) {
-                newId = part.getId() + 1;
-                for(Part part2: Inventory.getAllParts()) {
-                    if (part2.getId() == newId) {
-                        newId = part2.getId() + 1;
-                    }
+        while(true) {
+            int idMatchCount = 0;
+            for (Part part: Inventory.getAllParts()) {
+                if (part.getId() == newId) {
+                    newId = part.getId() + 1;
+                    idMatchCount++;
                 }
+            }
+            if (idMatchCount == 0) {
+                break;
             }
         }
 
