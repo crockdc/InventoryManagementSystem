@@ -170,20 +170,28 @@ public class modifyProductController implements Initializable {
 
     @FXML
     void onActionModifyProductSearchText(ActionEvent event) {
-        ObservableList<Part> searchList = FXCollections.observableArrayList();
+        ObservableList<Part> searchList;
         if (!modifyProductSearchText.getText().isEmpty()) {
             for (Part part : Inventory.getAllParts()) {
                 if (modifyProductSearchText.getText().equals(String.valueOf(part.getId()))) {
-                    searchList.add(part);
-                    if (!searchList.isEmpty()) {
-                        modifyProductAddPartTableView.setItems(searchList);
-                        return;
-                    }
+                    modifyProductAddPartTableView.getSelectionModel().select(part);
+                    return;
                 }
             }
+            searchList = Inventory.lookupPart(modifyProductSearchText.getText());
+            if (searchList.isEmpty()) {
+                modifyProductAddPartTableView.getSelectionModel().clearSelection();
+                modifyProductAddPartTableView.setItems(Inventory.getAllParts());
+                Alert alert = new Alert(Alert.AlertType.ERROR, "No part was found.");
+                alert.setTitle("No Part Found");
+                Optional<ButtonType> result = alert.showAndWait();
+                return;
+            }
+            modifyProductAddPartTableView.getSelectionModel().clearSelection();
             modifyProductAddPartTableView.setItems(Inventory.lookupPart(modifyProductSearchText.getText()));
             return;
         }
+        modifyProductAddPartTableView.getSelectionModel().clearSelection();
         modifyProductAddPartTableView.setItems(Inventory.getAllParts());
     }
 

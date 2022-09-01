@@ -178,20 +178,28 @@ public class addProductController implements Initializable {
 
     @FXML
     void onActionAddProductSearchText(ActionEvent event) {
-        ObservableList<Part> searchList = FXCollections.observableArrayList();
+        ObservableList<Part> searchList;
         if (!addProductSearchText.getText().isEmpty()) {
             for (Part part : Inventory.getAllParts()) {
                 if (addProductSearchText.getText().equals(String.valueOf(part.getId()))) {
-                    searchList.add(part);
-                    if (!searchList.isEmpty()) {
-                        addProductAddPartTableView.setItems(searchList);
-                        return;
-                    }
+                    addProductAddPartTableView.getSelectionModel().select(part);
+                    return;
                 }
             }
+            searchList = Inventory.lookupPart(addProductSearchText.getText());
+            if (searchList.isEmpty()) {
+                addProductAddPartTableView.getSelectionModel().clearSelection();
+                addProductAddPartTableView.setItems(Inventory.getAllParts());
+                Alert alert = new Alert(Alert.AlertType.ERROR, "No part was found.");
+                alert.setTitle("No Part Found");
+                Optional<ButtonType> result = alert.showAndWait();
+                return;
+            }
+            addProductAddPartTableView.getSelectionModel().clearSelection();
             addProductAddPartTableView.setItems(Inventory.lookupPart(addProductSearchText.getText()));
             return;
         }
+        addProductAddPartTableView.getSelectionModel().clearSelection();
         addProductAddPartTableView.setItems(Inventory.getAllParts());
     }
 
