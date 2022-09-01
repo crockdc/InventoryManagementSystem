@@ -137,7 +137,7 @@ public class mainMenuController implements Initializable {
                 }
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Product cannot have associated parts upon deletion.\n" +
-                        "\n Please modify and remove associated parts.");
+                        "\nPlease modify and remove associated parts.");
                 alert.setTitle("Product Has Associated Parts Error");
                 Optional<ButtonType> result = alert.showAndWait();
             }
