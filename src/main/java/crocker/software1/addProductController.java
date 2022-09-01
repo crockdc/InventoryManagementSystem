@@ -157,8 +157,7 @@ public class addProductController implements Initializable {
                 !addProductInvText.getText().isEmpty() &&
                 !addProductPriceText.getText().isEmpty() &&
                 !addProductMinText.getText().isEmpty() &&
-                !addProductMaxText.getText().isEmpty() &&
-                !addProductDeletePartTableView.getItems().isEmpty())
+                !addProductMaxText.getText().isEmpty())
         {
             Product newProduct = new Product(addProductDeletePartTableView.getItems(),newId, addProductNameText.getText(),
                     Double.parseDouble(addProductPriceText.getText()), Integer.parseInt(addProductInvText.getText()),
@@ -170,7 +169,7 @@ public class addProductController implements Initializable {
             stage.setScene(new Scene(scene));
             stage.show();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please complete all fields and add at least ONE associated part.");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please complete all fields.");
             alert.setTitle("Incomplete Fields Error");
             Optional<ButtonType> result = alert.showAndWait();
         }
@@ -178,20 +177,28 @@ public class addProductController implements Initializable {
 
     @FXML
     void onActionAddProductSearchText(ActionEvent event) {
-        ObservableList<Part> searchList = FXCollections.observableArrayList();
+        ObservableList<Part> searchList;
         if (!addProductSearchText.getText().isEmpty()) {
             for (Part part : Inventory.getAllParts()) {
                 if (addProductSearchText.getText().equals(String.valueOf(part.getId()))) {
-                    searchList.add(part);
-                    if (!searchList.isEmpty()) {
-                        addProductAddPartTableView.setItems(searchList);
-                        return;
-                    }
+                    addProductAddPartTableView.getSelectionModel().select(part);
+                    return;
                 }
             }
+            searchList = Inventory.lookupPart(addProductSearchText.getText());
+            if (searchList.isEmpty()) {
+                addProductAddPartTableView.getSelectionModel().clearSelection();
+                addProductAddPartTableView.setItems(Inventory.getAllParts());
+                Alert alert = new Alert(Alert.AlertType.ERROR, "No part was found.");
+                alert.setTitle("No Part Found");
+                Optional<ButtonType> result = alert.showAndWait();
+                return;
+            }
+            addProductAddPartTableView.getSelectionModel().clearSelection();
             addProductAddPartTableView.setItems(Inventory.lookupPart(addProductSearchText.getText()));
             return;
         }
+        addProductAddPartTableView.getSelectionModel().clearSelection();
         addProductAddPartTableView.setItems(Inventory.getAllParts());
     }
 

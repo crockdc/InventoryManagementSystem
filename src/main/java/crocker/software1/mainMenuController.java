@@ -128,11 +128,18 @@ public class mainMenuController implements Initializable {
     @FXML
     void onActionMainDeleteProduct(ActionEvent event) throws IOException {
         if (!mainProductTable.getSelectionModel().getSelectedCells().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this product?");
-            alert.setTitle("Confirm Product Deletion");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                Inventory.deleteProduct(mainProductTable.getSelectionModel().getSelectedItem());
+            if (mainProductTable.getSelectionModel().getSelectedItem().getAssociatedParts().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this product?");
+                alert.setTitle("Confirm Product Deletion");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    Inventory.deleteProduct(mainProductTable.getSelectionModel().getSelectedItem());
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Product cannot have associated parts upon deletion.\n" +
+                        "\n Please modify and remove associated parts.");
+                alert.setTitle("Product Has Associated Parts Error");
+                Optional<ButtonType> result = alert.showAndWait();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a product to delete.");
@@ -205,42 +212,59 @@ public class mainMenuController implements Initializable {
 
     @FXML
     void onActionMainPartSearchText(ActionEvent event) {
-        ObservableList<Part> searchList = FXCollections.observableArrayList();
+        ObservableList<Part> searchList;
         if (!mainPartSearchText.getText().isEmpty()) {
             for (Part part : Inventory.getAllParts()) {
                 if (mainPartSearchText.getText().equals(String.valueOf(part.getId()))) {
-                    searchList.add(part);
-                    if (!searchList.isEmpty()) {
-                        mainPartTable.setItems(searchList);
-                        return;
-                    }
+                    mainPartTable.getSelectionModel().select(part);
+                    return;
                 }
             }
+            searchList = Inventory.lookupPart(mainPartSearchText.getText());
+            if (searchList.isEmpty()) {
+                mainPartTable.getSelectionModel().clearSelection();
+                mainPartTable.setItems(Inventory.getAllParts());
+                Alert alert = new Alert(Alert.AlertType.ERROR, "No part was found.");
+                alert.setTitle("No Part Found");
+                Optional<ButtonType> result = alert.showAndWait();
+                return;
+            }
+            mainPartTable.getSelectionModel().clearSelection();
             mainPartTable.setItems(Inventory.lookupPart(mainPartSearchText.getText()));
             return;
         }
+        mainPartTable.getSelectionModel().clearSelection();
         mainPartTable.setItems(Inventory.getAllParts());
     }
 
 
     @FXML
     void onActionMainProductSearchText(ActionEvent event) {
-        ObservableList<Product> searchList = FXCollections.observableArrayList();
+        ObservableList<Product> searchList;
         if (!mainProductSearchText.getText().isEmpty()) {
             for (Product product : Inventory.getAllProducts()) {
                 if (mainProductSearchText.getText().equals(String.valueOf(product.getId()))) {
-                    searchList.add(product);
-                    if (!searchList.isEmpty()) {
-                        mainProductTable.setItems(searchList);
-                        return;
-                    }
+                    mainProductTable.getSelectionModel().select(product);
+                    return;
                 }
             }
+            searchList = Inventory.lookupProduct(mainProductSearchText.getText());
+            if (searchList.isEmpty()) {
+                mainProductTable.getSelectionModel().clearSelection();
+                mainProductTable.setItems(Inventory.getAllProducts());
+                Alert alert = new Alert(Alert.AlertType.ERROR, "No product was found.");
+                alert.setTitle("No Product Found");
+                Optional<ButtonType> result = alert.showAndWait();
+                return;
+            }
+            mainProductTable.getSelectionModel().clearSelection();
             mainProductTable.setItems(Inventory.lookupProduct(mainProductSearchText.getText()));
             return;
         }
+        mainProductTable.getSelectionModel().clearSelection();
         mainProductTable.setItems(Inventory.getAllProducts());
     }
+
     @FXML
     void onActionMainSearchPartsButton(ActionEvent event) {
         onActionMainPartSearchText(event);
