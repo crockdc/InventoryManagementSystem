@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class addPartController implements Initializable {
     Stage stage;
@@ -55,6 +56,22 @@ public class addPartController implements Initializable {
 
     @FXML
     private ToggleGroup addPartToggle;
+
+    private boolean verifyDouble(String string) {
+        Scanner scanner = new Scanner(string);
+        if (scanner.hasNextDouble()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean verifyInteger(String string) {
+        Scanner scanner = new Scanner(string);
+        if (scanner.hasNextInt()) {
+            return true;
+        }
+        return false;
+    }
 
     @FXML
     void onActionAddPartCancelButton(ActionEvent event) throws IOException {
@@ -115,9 +132,9 @@ public class addPartController implements Initializable {
     @FXML
     void onActionAddPartSaveButton(ActionEvent event) throws IOException {
         int newId = 1;
-        while(true) {
+        while (true) {
             int idMatchCount = 0;
-            for (Part part: Inventory.getAllParts()) {
+            for (Part part : Inventory.getAllParts()) {
                 if (part.getId() == newId) {
                     newId = part.getId() + 1;
                     idMatchCount++;
@@ -127,35 +144,82 @@ public class addPartController implements Initializable {
                 break;
             }
         }
-
-        if (!addPartNameText.getText().isEmpty() &&
-        !addPartInvText.getText().isEmpty() &&
-        !addPartPriceText.getText().isEmpty() &&
-        !addPartMinText.getText().isEmpty() &&
-        !addPartMaxText.getText().isEmpty() &&
-        !addPartCompanyText.getText().isEmpty()) {
-            if (addPartInHouse.isSelected()) {
-                InHouse inhouse = new InHouse(newId, addPartNameText.getText(),
-                        Double.parseDouble(addPartPriceText.getText()), Integer.parseInt(addPartInvText.getText()),
-                        Integer.parseInt(addPartMinText.getText()), Integer.parseInt(addPartMaxText.getText()),
-                        Integer.parseInt(addPartCompanyText.getText()));
-                Inventory.addPart(inhouse);
+        try {
+            if (!addPartNameText.getText().isEmpty() &&
+                    !addPartInvText.getText().isEmpty() &&
+                    !addPartPriceText.getText().isEmpty() &&
+                    !addPartMinText.getText().isEmpty() &&
+                    !addPartMaxText.getText().isEmpty() &&
+                    !addPartCompanyText.getText().isEmpty()) {
+                if (Integer.parseInt(addPartMaxText.getText()) > Integer.parseInt(addPartMinText.getText())) {
+                    if (Integer.parseInt(addPartInvText.getText()) >= Integer.parseInt(addPartMinText.getText())
+                            && Integer.parseInt(addPartInvText.getText()) <= Integer.parseInt(addPartMaxText.getText())) {
+                        if (addPartInHouse.isSelected()) {
+                            InHouse inhouse = new InHouse(newId, addPartNameText.getText(),
+                                    Double.parseDouble(addPartPriceText.getText()), Integer.parseInt(addPartInvText.getText()),
+                                    Integer.parseInt(addPartMinText.getText()), Integer.parseInt(addPartMaxText.getText()),
+                                    Integer.parseInt(addPartCompanyText.getText()));
+                            Inventory.addPart(inhouse);
+                        } else {
+                            OutSourced outsourced = new OutSourced(newId, addPartNameText.getText(),
+                                    Double.parseDouble(addPartPriceText.getText()), Integer.parseInt(addPartInvText.getText()),
+                                    Integer.parseInt(addPartMinText.getText()), Integer.parseInt(addPartMaxText.getText()),
+                                    addPartCompanyText.getText());
+                            Inventory.addPart(outsourced);
+                        }
+                        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                        scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+                        stage.setTitle("Inventory Management System");
+                        stage.setScene(new Scene(scene));
+                        stage.show();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Inventory must be between Min and Max values.");
+                        alert.setTitle("Inventory Error");
+                        Optional<ButtonType> result = alert.showAndWait();
+                    }
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Min field must be less than Max field.");
+                    alert.setTitle("Min/Max Error");
+                    Optional<ButtonType> result = alert.showAndWait();
+                }
             } else {
-                OutSourced outsourced = new OutSourced(newId, addPartNameText.getText(),
-                        Double.parseDouble(addPartPriceText.getText()), Integer.parseInt(addPartInvText.getText()),
-                        Integer.parseInt(addPartMinText.getText()), Integer.parseInt(addPartMaxText.getText()),
-                        addPartCompanyText.getText());
-                Inventory.addPart(outsourced);
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please complete all fields.");
+                alert.setTitle("Incomplete Fields Error");
+                Optional<ButtonType> result = alert.showAndWait();
             }
-            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-            stage.setTitle("Inventory Management System");
-            stage.setScene(new Scene(scene));
-            stage.show();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please complete all fields.");
-            alert.setTitle("Incomplete Fields Error");
-            Optional<ButtonType> result = alert.showAndWait();
+       } catch (NumberFormatException e) {
+            if (addPartInHouse.isSelected()) {
+                if (!verifyInteger(addPartCompanyText.getText())) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Machine ID field displays \"" + addPartCompanyText.getText()
+                    + "\"." + "\nPlease enter numerical value only.");
+                    alert.setTitle("Machine ID Field Error");
+                    Optional<ButtonType> result = alert.showAndWait();
+                }
+            }
+            if (!verifyInteger(addPartInvText.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Inventory field displays \"" +
+                        addPartInvText.getText() + "\"." + "\nPlease enter numerical value only.");
+                alert.setTitle("Inventory Field Error");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
+            if (!verifyDouble(addPartPriceText.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Price/Cost field displays \"" +
+                        addPartPriceText.getText() + "\"." + "\nPlease enter numerical value only.");
+                alert.setTitle("Price/Cost Field Error");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
+            if (!verifyInteger(addPartMaxText.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Max field displays \"" +
+                        addPartMaxText.getText() + "\"." + "\nPlease enter numerical value only.");
+                alert.setTitle("Max Field Error");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
+            if (!verifyInteger(addPartMinText.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Min field displays \"" +
+                        addPartMinText.getText() + "\"." + "\nPlease enter numerical value only.");
+                alert.setTitle("Min Field Error");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
         }
     }
 

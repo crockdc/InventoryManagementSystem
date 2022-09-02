@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class addProductController implements Initializable {
     Stage stage;
@@ -88,6 +89,22 @@ public class addProductController implements Initializable {
     @FXML
     private TextField addProductSearchText;
 
+    private boolean verifyDouble(String string) {
+        Scanner scanner = new Scanner(string);
+        if (scanner.hasNextDouble()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean verifyInteger(String string) {
+        Scanner scanner = new Scanner(string);
+        if (scanner.hasNextInt()) {
+            return true;
+        }
+        return false;
+    }
+
     @FXML
     void onActionAddProductAddPartButton(ActionEvent event) {
         if (addProductAddPartTableView.getSelectionModel().isEmpty()) {
@@ -112,7 +129,7 @@ public class addProductController implements Initializable {
         alert.setTitle("Confirm Cancel");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
             stage.setTitle("Inventory Management System");
             stage.setScene(new Scene(scene));
@@ -141,9 +158,9 @@ public class addProductController implements Initializable {
     @FXML
     void onActionAddProductSaveButton(ActionEvent event) throws IOException {
         int newId = 1;
-        while(true) {
+        while (true) {
             int idMatchCount = 0;
-            for (Product product: Inventory.getAllProducts()) {
+            for (Product product : Inventory.getAllProducts()) {
                 if (product.getId() == newId) {
                     newId = product.getId() + 1;
                     idMatchCount++;
@@ -153,25 +170,64 @@ public class addProductController implements Initializable {
                 break;
             }
         }
-        if (!addProductNameText.getText().isEmpty() &&
-                !addProductInvText.getText().isEmpty() &&
-                !addProductPriceText.getText().isEmpty() &&
-                !addProductMinText.getText().isEmpty() &&
-                !addProductMaxText.getText().isEmpty())
-        {
-            Product newProduct = new Product(addProductDeletePartTableView.getItems(),newId, addProductNameText.getText(),
-                    Double.parseDouble(addProductPriceText.getText()), Integer.parseInt(addProductInvText.getText()),
-                    Integer.parseInt(addProductMinText.getText()), Integer.parseInt(addProductMaxText.getText()));
-            Inventory.addProduct(newProduct);
-            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-            stage.setTitle("Inventory Management System");
-            stage.setScene(new Scene(scene));
-            stage.show();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please complete all fields.");
-            alert.setTitle("Incomplete Fields Error");
-            Optional<ButtonType> result = alert.showAndWait();
+        try {
+            if (!addProductNameText.getText().isEmpty() &&
+                    !addProductInvText.getText().isEmpty() &&
+                    !addProductPriceText.getText().isEmpty() &&
+                    !addProductMinText.getText().isEmpty() &&
+                    !addProductMaxText.getText().isEmpty()) {
+                if (Integer.parseInt(addProductMaxText.getText()) > Integer.parseInt(addProductMinText.getText())) {
+                    if (Integer.parseInt(addProductInvText.getText()) >= Integer.parseInt(addProductMinText.getText())
+                            && Integer.parseInt(addProductInvText.getText()) <= Integer.parseInt(addProductMaxText.getText())) {
+                        Product newProduct = new Product(addProductDeletePartTableView.getItems(), newId, addProductNameText.getText(),
+                                Double.parseDouble(addProductPriceText.getText()), Integer.parseInt(addProductInvText.getText()),
+                                Integer.parseInt(addProductMinText.getText()), Integer.parseInt(addProductMaxText.getText()));
+                        Inventory.addProduct(newProduct);
+                        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                        scene = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+                        stage.setTitle("Inventory Management System");
+                        stage.setScene(new Scene(scene));
+                        stage.show();
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Inventory must be between Min and Max values.");
+                        alert.setTitle("Inventory Error");
+                        Optional<ButtonType> result = alert.showAndWait();
+                    }
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Min field must be less than Max field.");
+                    alert.setTitle("Min/Max Error");
+                    Optional<ButtonType> result = alert.showAndWait();
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Please complete all fields.");
+                alert.setTitle("Incomplete Fields Error");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
+        } catch (NumberFormatException e) {
+            if (!verifyInteger(addProductInvText.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Inventory field displays \"" +
+                        addProductInvText.getText() + "\"." + "\nPlease enter numerical value only.");
+                alert.setTitle("Inventory Field Error");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
+            if (!verifyDouble(addProductPriceText.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Price/Cost field displays \"" +
+                        addProductPriceText.getText() + "\"." + "\nPlease enter numerical value only.");
+                alert.setTitle("Price/Cost Field Error");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
+            if (!verifyInteger(addProductMaxText.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Max field displays \"" +
+                        addProductMaxText.getText() + "\"." + "\nPlease enter numerical value only.");
+                alert.setTitle("Max Field Error");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
+            if (!verifyInteger(addProductMinText.getText())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Min field displays \"" +
+                        addProductMinText.getText() + "\"." + "\nPlease enter numerical value only.");
+                alert.setTitle("Min Field Error");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
         }
     }
 

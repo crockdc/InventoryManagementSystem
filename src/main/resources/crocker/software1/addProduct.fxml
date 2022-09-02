@@ -90,7 +90,7 @@
       </TableView>
       <Button fx:id="addProductCancelButton" layoutX="986.0" layoutY="679.0" mnemonicParsing="false" onAction="#onActionAddProductCancelButton" prefHeight="46.0" prefWidth="109.0" text="Cancel" />
       <Button fx:id="addProductSaveButton" layoutX="844.0" layoutY="679.0" mnemonicParsing="false" onAction="#onActionAddProductSaveButton" prefHeight="46.0" prefWidth="109.0" text="Save" />
-      <Button fx:id="addProductDeletePartButton" layoutX="640.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionAddProductDeletePartButton" prefHeight="46.0" prefWidth="109.0" text="Delete" />
+      <Button fx:id="addProductDeletePartButton" layoutX="640.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionAddProductDeletePartButton" prefHeight="46.0" prefWidth="109.0" text="Remove Part" />
       <Button fx:id="addProductAddPartButton" layoutX="640.0" layoutY="323.0" mnemonicParsing="false" onAction="#onActionAddProductAddPartButton" prefHeight="46.0" prefWidth="109.0" text="Add" />
       <Button fx:id="addProductAddPartSearchButton" layoutX="640.0" layoutY="63.0" mnemonicParsing="false" onAction="#onActionAddProductAddPartSearchButton" prefHeight="46.0" prefWidth="109.0" text="Search" />
    </children>
